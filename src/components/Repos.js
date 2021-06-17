@@ -33,33 +33,30 @@ return b.stars - a.stars;
 return {...item,value:item.stars}
 }).slice(0,5);
 
-console.log(mostPopular);
 
-  
-  const chartData = [
-  {
-    label: "HTML",
-    value: "13"
-  },
-  {
-    label: "CSS",
-    value: "30"
-  },
-  {
-    label: "javascript",
-    value: "160"
-  }
-];
+// Stars and forks
+let {stars,forks} = repos.reduce((total,item)=>{
+  const {stargazers_count,name,forks} = item;
+  total.stars[stargazers_count] = {label:name,value:stargazers_count}
+  total.forks[forks] = {label:name,value:forks}
+  return total
+},{
+  stars:{},forks:{}
+})
+
+stars = Object.values(stars).slice(-5).reverse();
+forks = Object.values(forks).slice(-5).reverse();
+
+
   // console.log(repos);
   return (
     <section className='section'>
       <Wrapper className='section-center'>
-        {/* <ExampleChart data={chartData}/> */}
-        
+        {/* <ExampleChart data={chartData}/> */}       
         <Pie3D data={mostUsed}></Pie3D>
-          <Column3D data={chartData}></Column3D>
+          <Column3D data={stars}></Column3D>
           <Doughnut2D data={mostPopular}></Doughnut2D>
-          <Bar3D data={chartData}></Bar3D>
+          <Bar3D data={forks}></Bar3D>
       </Wrapper>
     </section>
   )
